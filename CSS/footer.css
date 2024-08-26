@@ -1,0 +1,49 @@
+footer{
+    height: max-content;
+    background-color: #00565F;  
+}
+.purchaseInfo{
+    background-color: #757b7e8a;
+    background-color: #01444C;
+    display: flex;
+    padding: 2rem;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.purchaseInfo div{
+    color: white;
+    font-weight: bold;
+    font-size: 20px;    
+    text-align: center;
+    width: 280px;
+    padding: 40px auto;
+    margin: 25px auto;
+}
+.purchaseInfo div i{
+    font-size: 35px;
+}
+
+.shopInfo{
+    padding: 25px;
+    display: flex;
+    padding: 2rem;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;  
+}
+.shopInfo p{
+    width: 200px;
+    color: white;
+}
+
+footer hr{
+    border: 2px solid white;
+    width: 95%;
+    margin: auto;
+}
+footer img{
+    display: block;
+    margin: auto;
+}

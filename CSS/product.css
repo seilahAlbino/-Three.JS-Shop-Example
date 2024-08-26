@@ -1,0 +1,41 @@
+#viewButtons{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 5px;
+    }
+    
+    #viewButtons button{
+        background-color: white;
+        padding: 10px;
+        margin: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        width: 100px;
+        text-align: center;
+    }
+    
+    #viewButtons button:hover{
+        background-color: rgb(218, 215, 215);
+    }
+    
+    .canvasBox{
+        width: max-content;
+        height: max-content;
+    }
+
+main{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+main .options{
+    border: 1px solid black;
+    padding: 15px;
+    height: 600px;
+    width: 40%;
+}
