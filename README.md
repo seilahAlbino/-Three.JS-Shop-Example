@@ -5,4 +5,5 @@ La Redoute store replica with product editor using three.js
 Project carried out within the scope of the Graphic Systems and Interaction discipline
 
 Preview:
-https://github.com/user-attachments/assets/85acdde3-1afc-4a18-b429-d99afd37b123
+
+[![Assista ao vídeo](https://img.youtube.com/vi/VIDEO_ID/hqdefault.jpg)](https://github.com/user-attachments/assets/9e19dfa3-a29f-4f7d-9be3-559a222d5701)
