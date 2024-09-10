@@ -27,100 +27,63 @@ let todos = [];
 let animations = []
 
 let iniciou = false;
-function carregarRecursos() {
-    return new Promise((resolve, reject) => {
-        const carregarScripts = () => {
-            return new Promise((resolveAll, rejectAll) => {
-                const scripts = [
-                    'JS/Three.js/Color.js',
-                    'JS/Three.js/Material.js',
-                    'JS/Three.js/Views.js',
-                    'JS/Three.js/Light.js'
-                ];
+carregador.load(
+    'blender/SGI.glb',
+    function ( gltf ) {
+    
+    scene.add( gltf.scene )
 
-                let carregados = 0;
+    scene.traverse( function (currentObject) {
+        if(currentObject.isMesh){
+            currentObject.castShadow = true;
+            currentObject.receiveShadow = true;
+        }
 
-                scripts.forEach(src => {
-                    const script = document.createElement('script');
-                    script.type = 'module';
-                    script.src = src;
-                    script.onload = () => {
-                        carregados++;
-                        if (carregados === scripts.length) {
-                            resolveAll();
-                        }
-                    };
-                    script.onerror = () => rejectAll(new Error(`Falha ao carregar o script: ${src}`));
-                    document.head.appendChild(script);
-                });
-            });
-        };
+        switch(currentObject.name){
+            case "Base_cama_pequena":
+            case "Base_pequena_grande_":
+            case "Encosto":
+            case "Movel_TV":
+            case "TVWall":
+                objetos.estrutura.push(currentObject); 
+                break;
+            case "Gaveta1Pequena": 
+            case "Gaveta2Pequena_": 
+            case "GavetaGrande":
+                objetos.gavetas.push(currentObject);
+                break;
+        }
 
-        carregador.load(
-            'blender/SGI.glb',
-            function (gltf) {
-                scene.add(gltf.scene);
+        if(currentObject.name == "Desk_Handle_04"){
+            addScripts();
+            let clipe = THREE.AnimationClip.findByName( gltf.animations, 'TVAction' )
+            animations.push({isPlaying: false, animation: misturador.clipAction(clipe)})
+            clipe = THREE.AnimationClip.findByName( gltf.animations, 'TVWallAction' )
+            animations.push({isPlaying: false, animation: misturador.clipAction(clipe)})
+            clipe = THREE.AnimationClip.findByName( gltf.animations, 'MantaAction' )
+            animations.push({isPlaying: false, animation: misturador.clipAction(clipe)})
+            clipe = THREE.AnimationClip.findByName( gltf.animations, 'Gaveta1PequenaAction' )
+            animations.push({isPlaying: false, animation: misturador.clipAction(clipe)})
+            clipe = THREE.AnimationClip.findByName( gltf.animations, 'Gaveta2Pequena Action' )
+            animations.push({isPlaying: false, animation: misturador.clipAction(clipe)})
+            clipe = THREE.AnimationClip.findByName( gltf.animations, 'GavetaGrandeAction' )
+            animations.push({isPlaying: false, animation: misturador.clipAction(clipe)})
 
-                scene.traverse(function (currentObject) {
-                    if (currentObject.isMesh) {
-                        currentObject.castShadow = true;
-                        currentObject.receiveShadow = true;
-                    }
+            iniciou = true;
+            todos = todos.concat(objetos.gavetas, objetos.estrutura);
 
-                    switch (currentObject.name) {
-                        case "Base_cama_pequena":
-                        case "Base_pequena_grande_":
-                        case "Encosto":
-                        case "Movel_TV":
-                        case "TVWall":
-                            objetos.estrutura.push(currentObject);
-                            break;
-                        case "Gaveta1Pequena":
-                        case "Gaveta2Pequena_":
-                        case "GavetaGrande":
-                            objetos.gavetas.push(currentObject);
-                            break;
-                    }
-
-                    if (currentObject.name === "Desk_Handle_04") {
-                        let clipe = THREE.AnimationClip.findByName(gltf.animations, 'TVAction');
-                        animations.push({ isPlaying: false, animation: misturador.clipAction(clipe) });
-                        clipe = THREE.AnimationClip.findByName(gltf.animations, 'TVWallAction');
-                        animations.push({ isPlaying: false, animation: misturador.clipAction(clipe) });
-                        clipe = THREE.AnimationClip.findByName(gltf.animations, 'MantaAction');
-                        animations.push({ isPlaying: false, animation: misturador.clipAction(clipe) });
-                        clipe = THREE.AnimationClip.findByName(gltf.animations, 'Gaveta1PequenaAction');
-                        animations.push({ isPlaying: false, animation: misturador.clipAction(clipe) });
-                        clipe = THREE.AnimationClip.findByName(gltf.animations, 'Gaveta2Pequena Action');
-                        animations.push({ isPlaying: false, animation: misturador.clipAction(clipe) });
-                        clipe = THREE.AnimationClip.findByName(gltf.animations, 'GavetaGrandeAction');
-                        animations.push({ isPlaying: false, animation: misturador.clipAction(clipe) });
-
-                        iniciou = true;
-                        todos = todos.concat(objetos.gavetas, objetos.estrutura);
-
-                        animations[2].animation.clampWhenFinished = true;
-                        animations[2].animation.setLoop(THREE.LoopOnce);
-                        animations[2].animation.play();
-                    }
-                });
-
-                carregarScripts().then(() => resolve()).catch(reject);
-            },
-            undefined,
-            function (error) {
-                reject(error);
-            }
-        );
+            animations[2].animation.clampWhenFinished = true;
+            animations[2].animation.setLoop(THREE.LoopOnce);
+            animations[2].animation.play()
+        }
     });
-}
 
-carregarRecursos().then(() => {
-    document.getElementById('loading-container').style.display = 'none';
-    document.getElementById('overlay').style.display = 'none';
-}).catch(error => {
-    console.error('Erro ao carregar os recursos:', error);
-});
+    setTimeout(() => {
+        document.getElementById('loading-container').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }, 1000);
+    }
+)
 
 /*                     Add Scripts                     */
 function addScripts(){
